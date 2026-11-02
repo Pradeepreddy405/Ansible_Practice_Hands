@@ -1,0 +1,56 @@
+---
+- name: Linux System Monitoring
+  hosts: managed_nodes
+  gather_facts: false
+
+  tasks:
+
+    # 1. Hostname
+    - name: Check Hostname
+      ansible.builtin.command: hostname
+      register: hostname_output
+      changed_when: false
+
+    # 2. CPU Information
+    - name: Check CPU Architecture
+      ansible.builtin.command: uname -m
+      register: cpu_architecture
+      changed_when: false
+
+    - name: Check CPU Cores
+      ansible.builtin.command: nproc
+      register: cpu_cores
+      changed_when: false
+
+    # 3. Memory Information
+    - name: Check Memory Utilization
+      ansible.builtin.command: free -m
+      register: memory_output
+      changed_when: false
+
+    # 4. Disk Information
+    - name: Check Disk Utilization
+      ansible.builtin.command: df -h /
+      register: disk_output
+      changed_when: false
+
+    # 5. System Uptime
+    - name: Check System Uptime
+      ansible.builtin.command: uptime -p
+      register: uptime_output
+      changed_when: false
+
+    # 6. Display Monitoring Report
+    - name: Display Monitoring Report
+      ansible.builtin.debug:
+        msg:
+          - "=================================="
+          - "       LINUX SYSTEM REPORT"
+          - "=================================="
+          - "Hostname          : {{ hostname_output.stdout }}"
+          - "CPU Architecture : {{ cpu_architecture.stdout }}"
+          - "CPU Cores         : {{ cpu_cores.stdout }}"
+          - "Memory Information: {{ memory_output.stdout_lines[1] }}"
+          - "Disk Information  : {{ disk_output.stdout_lines[1] }}"
+          - "System Uptime     : {{ uptime_output.stdout }}"
+          - "=================================="
