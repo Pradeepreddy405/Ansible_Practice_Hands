@@ -1,0 +1,5 @@
+---
+- name: Display Hostname
+  hosts: all
+  ansible.builtin.command:
+    cmd: hostname
