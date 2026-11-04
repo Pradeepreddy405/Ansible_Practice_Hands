@@ -1,8 +1,6 @@
 ---
 - name: Display Hostname
   hosts: all
-
   tasks:
-    - name: Display Hostname
-      ansible.builtin.command:
-      cmd: hostname
+    - name: Run hostname command
+      ansible.builtin.command: hostname
